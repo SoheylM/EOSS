@@ -74,7 +74,7 @@ import org.moeaframework.core.comparator.ChainedComparator;
 import org.moeaframework.core.comparator.ParetoObjectiveComparator;
 import org.moeaframework.core.operator.CompoundVariation;
 import org.moeaframework.core.operator.RandomInitialization;
-import org.moeaframework.core.operator.integer.IntegerUM;
+import seakers.architecture.operators.IntegerUM;
 import org.orekit.errors.OrekitException;
 import org.orekit.time.AbsoluteDate;
 import org.orekit.time.TimeScale;

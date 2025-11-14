@@ -14,7 +14,7 @@ import seakers.architecture.pattern.Permuting;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.moeaframework.core.Solution;
-import org.moeaframework.core.variable.IntegerVariable;
+import seakers.architecture.util.IntegerVariable;
 import org.orekit.time.AbsoluteDate;
 
 /**
