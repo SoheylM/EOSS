@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
-import org.moeaframework.core.ParallelPRNG;
+import org.moeaframework.core.PRNG;
 
 /**
  * This domain-specific heuristic looks for opportunities where an instrument
@@ -30,11 +30,11 @@ public class ImproveOrbit extends AbstractEOSSOperator {
      */
     private final int subsetSize;
 
-    private final ParallelPRNG pprng;
+    private final // ParallelPRNG pprng (replaced with static PRNG);
     
     public ImproveOrbit(int subsetSize){
         this.subsetSize = subsetSize;
-        this.pprng = new ParallelPRNG();
+        
     }
         
     @Override
@@ -55,7 +55,7 @@ public class ImproveOrbit extends AbstractEOSSOperator {
         Collections.shuffle(instIndices);//this sorts orbits in random order
         
         //choose the size of the subset
-        int chosensize = pprng.nextInt(subsetSize) + 1;
+        int chosensize = PRNG.nextInt(subsetSize) + 1;
         
         ArrayList<String> instSubsetNames = new ArrayList<>();
         ArrayList<Integer> instSubsetIndices = new ArrayList<>();

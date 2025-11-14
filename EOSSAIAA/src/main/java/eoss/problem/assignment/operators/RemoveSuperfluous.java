@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
-import org.moeaframework.core.ParallelPRNG;
+import org.moeaframework.core.PRNG;
 import rbsa.eoss.Interaction;
 import rbsa.eoss.NDSM;
 import rbsa.eoss.Nto1pair;
@@ -32,7 +32,7 @@ public class RemoveSuperfluous extends AbstractEOSSOperator {
      */
     private final int subsetSize;
 
-    private final ParallelPRNG pprng;
+    private final // ParallelPRNG pprng (replaced with static PRNG);
 
     /**
      *
@@ -40,7 +40,7 @@ public class RemoveSuperfluous extends AbstractEOSSOperator {
      */
     public RemoveSuperfluous(int subsetSize) {
         this.subsetSize = subsetSize;
-        this.pprng = new ParallelPRNG();
+        
     }
 
     @Override
@@ -133,10 +133,10 @@ public class RemoveSuperfluous extends AbstractEOSSOperator {
             } else {
                 subset = costRTM;
             }
-            Interaction randCostInteraction = subset.get(pprng.nextInt(subset.size()));
+            Interaction randCostInteraction = subset.get(PRNG.nextInt(subset.size()));
             return EOSSDatabase.findInstrumentIndex(EOSSDatabase.getInstrument(randCostInteraction.getNtpair().getAdded()));
         } else {
-            Nto1pair randpair= relevantInteractions.get(pprng.nextInt(relevantInteractions.size()));
+            Nto1pair randpair= relevantInteractions.get(PRNG.nextInt(relevantInteractions.size()));
             return EOSSDatabase.findInstrumentIndex(EOSSDatabase.getInstrument(randpair.getAdded()));
         }
     }

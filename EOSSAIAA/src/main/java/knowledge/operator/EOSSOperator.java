@@ -11,7 +11,7 @@ import eoss.problem.Orbit;
 import eoss.problem.assignment.operators.AbstractEOSSOperator;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.moeaframework.core.ParallelPRNG;
+import org.moeaframework.core.PRNG;
 
 /**
  *
@@ -41,7 +41,6 @@ public class EOSSOperator extends AbstractEOSSOperator {
      */
     private final int[] instrument;
 
-    private final ParallelPRNG pprng;
 
     /**
      * array of all orbit indices
@@ -102,8 +101,6 @@ public class EOSSOperator extends AbstractEOSSOperator {
         }
 
         checkParameters();
-
-        this.pprng = new ParallelPRNG();
     }
 
     /**
@@ -181,7 +178,7 @@ public class EOSSOperator extends AbstractEOSSOperator {
                 orbitArray = allOrbits;
             } else {
                 if (orbit == -1) {
-                    orbitArray = new int[]{pprng.nextInt(EOSSDatabase.getNumberOfOrbits())};
+                    orbitArray = new int[]{PRNG.nextInt(EOSSDatabase.getNumberOfOrbits())};
                 } else {
                     orbitArray = new int[]{orbit};
                 }
@@ -196,7 +193,7 @@ public class EOSSOperator extends AbstractEOSSOperator {
                         //case when instrument id is a wildcard
                         if (instrument[0] == -1) {
                             //select a random instrument for the orbit
-                            instID[0] = pprng.nextInt(EOSSDatabase.getNumberOfInstruments());
+                            instID[0] = PRNG.nextInt(EOSSDatabase.getNumberOfInstruments());
                         } else {
                             instID = instrument;
                         }
@@ -236,7 +233,7 @@ public class EOSSOperator extends AbstractEOSSOperator {
                         if (arch.getNorbits() > arg) {
                             while (arch.getNorbits() > arg) {
                                 Orbit[] occupiedOrbits = arch.getOccupiedOrbits();
-                                Orbit orbitToRemove = occupiedOrbits[pprng.nextInt(occupiedOrbits.length)];
+                                Orbit orbitToRemove = occupiedOrbits[PRNG.nextInt(occupiedOrbits.length)];
                                 int orbitIndexToRemove = EOSSDatabase.findOrbitIndex(orbitToRemove);
                                 ArrayList<Integer> instrumentsToRemove = arch.getInstrumentsInOrbit(orbitIndexToRemove);
                                 for (Integer inst : instrumentsToRemove) {
@@ -246,9 +243,9 @@ public class EOSSOperator extends AbstractEOSSOperator {
                         } else if (arch.getNorbits() < arg) {
                             while (arch.getNorbits() < arg) {
                                 Orbit[] emptyOrbits = arch.getEmptyOrbits();
-                                Orbit orbitToAdd = emptyOrbits[pprng.nextInt(emptyOrbits.length)];
+                                Orbit orbitToAdd = emptyOrbits[PRNG.nextInt(emptyOrbits.length)];
                                 int orbitIndexToAdd = EOSSDatabase.findOrbitIndex(orbitToAdd);
-                                int randInstToAdd = pprng.nextInt(EOSSDatabase.getNumberOfInstruments());
+                                int randInstToAdd = PRNG.nextInt(EOSSDatabase.getNumberOfInstruments());
                                 arch.addInstrumentToOrbit(randInstToAdd, orbitIndexToAdd);
                             }
                         }
@@ -258,7 +255,7 @@ public class EOSSOperator extends AbstractEOSSOperator {
                         if (arch.getInstrumentsInOrbit(orbitInd).size() > arg) {
                             while (arch.getInstrumentsInOrbit(orbitInd).size() > arg) {
                                 ArrayList<Integer> insts = arch.getInstrumentsInOrbit(orbitInd);
-                                arch.removeInstrumentFromOrbit(insts.get(pprng.nextInt(insts.size())), orbitInd);
+                                arch.removeInstrumentFromOrbit(insts.get(PRNG.nextInt(insts.size())), orbitInd);
                             }
                         } else if (arch.getInstrumentsInOrbit(orbitInd).size() < arg) {
                             while (arch.getInstrumentsInOrbit(orbitInd).size() < arg) {
@@ -268,7 +265,7 @@ public class EOSSOperator extends AbstractEOSSOperator {
                                     unassignedInst.add(i);
                                 }
                                 unassignedInst.removeAll(insts);
-                                arch.removeInstrumentFromOrbit(unassignedInst.get(pprng.nextInt(unassignedInst.size())), orbitInd);
+                                arch.removeInstrumentFromOrbit(unassignedInst.get(PRNG.nextInt(unassignedInst.size())), orbitInd);
                             }
                         }
                         break;

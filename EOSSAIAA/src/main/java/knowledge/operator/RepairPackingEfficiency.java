@@ -16,7 +16,7 @@ import eoss.spacecraft.SpacecraftDesigner;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import org.moeaframework.core.ParallelPRNG;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 
@@ -51,13 +51,13 @@ public class RepairPackingEfficiency implements Variation, CheckParents {
      */
     private final SpacecraftDesigner scDesigner;
 
-    private final ParallelPRNG pprng;
+    private final // ParallelPRNG pprng (replaced with static PRNG);
 
     public RepairPackingEfficiency(double threshold, int xInstruments, int ySatellites) {
         this.scDesigner = new SpacecraftDesigner();
         this.xInstruments = xInstruments;
         this.ySatellites = ySatellites;
-        this.pprng = new ParallelPRNG();
+        
         this.threshold = threshold;
     }
 
@@ -94,7 +94,7 @@ public class RepairPackingEfficiency implements Variation, CheckParents {
             if (i > copy.getMissionNames().size() || i >= candidateMission.size()) {
                 break;
             }
-            int missionIndex = pprng.nextInt(candidateMission.size());
+            int missionIndex = PRNG.nextInt(candidateMission.size());
             Mission m = candidateMission.get(missionIndex);
             for (int j = 0; j < xInstruments; j++) {
                 if (copy.getInstrumentsInSpacecraft(m).size() == EOSSDatabase.getNumberOfInstruments()) {
@@ -104,7 +104,7 @@ public class RepairPackingEfficiency implements Variation, CheckParents {
                     while (true) {
                         //try adding instruments until spacecraft is full or there is a change
                         if (copy.addInstrumentToSpacecraft(
-                                pprng.nextInt(EOSSDatabase.getNumberOfInstruments()), m)) {
+                                PRNG.nextInt(EOSSDatabase.getNumberOfInstruments()), m)) {
                             break;
                         }
                     }

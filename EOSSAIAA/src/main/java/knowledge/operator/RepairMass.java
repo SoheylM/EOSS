@@ -11,7 +11,7 @@ import eoss.spacecraft.Spacecraft;
 import eoss.problem.assignment.InstrumentAssignmentArchitecture2;
 import eoss.spacecraft.SpacecraftDesigner;
 import java.util.ArrayList;
-import org.moeaframework.core.ParallelPRNG;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.Variation;
 
@@ -45,14 +45,14 @@ public class RepairMass implements Variation, CheckParents {
      */
     private final SpacecraftDesigner scDesigner;
 
-    private final ParallelPRNG pprng;
+    private final // ParallelPRNG pprng (replaced with static PRNG);
 
     public RepairMass(double threshold, int xInstruments, int ySatellites) {
         this.scDesigner = new SpacecraftDesigner();
         this.threshold = threshold;
         this.xInstruments = xInstruments;
         this.ySatellites = ySatellites;
-        this.pprng = new ParallelPRNG();
+        
     }
 
     /**
@@ -80,14 +80,14 @@ public class RepairMass implements Variation, CheckParents {
             if (i > copy.getMissionNames().size() || i >= candidateMission.size()) {
                 break;
             }
-            int missionIndex = pprng.nextInt(candidateMission.size());
+            int missionIndex = PRNG.nextInt(candidateMission.size());
             Mission m =  candidateMission.get(missionIndex);
             for (int j = 0; j < xInstruments; j++) {
                 ArrayList<Integer> instruments = copy.getInstrumentsInSpacecraft(m);
                 if (instruments.isEmpty()) {
                     break;
                 } else {
-                    copy.removeInstrumentFromSpacecraft(instruments.get(pprng.nextInt(instruments.size())), m);
+                    copy.removeInstrumentFromSpacecraft(instruments.get(PRNG.nextInt(instruments.size())), m);
                 }
             }
             candidateMission.remove(missionIndex);

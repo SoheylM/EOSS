@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import org.moeaframework.core.ParallelPRNG;
+import org.moeaframework.core.PRNG;
 import org.moeaframework.core.Solution;
 import org.moeaframework.core.comparator.DominanceComparator;
 
@@ -33,7 +33,7 @@ public class KnowledgeStochasticRanking implements DominanceComparator,
     /**
      * Parallel pseudo random number generator
      */
-    private final ParallelPRNG pprng;
+    private final // ParallelPRNG pprng (replaced with static PRNG);
 
     /**
      * the probabilities with which to apply the constraint (string property of
@@ -45,7 +45,7 @@ public class KnowledgeStochasticRanking implements DominanceComparator,
         super();
         this.numberConstraints = numberOperators;
         this.probabilities = new HashMap<>(numberOperators);
-        this.pprng = new ParallelPRNG();
+        
     }
 
     public KnowledgeStochasticRanking(int numberOperators, Collection<String> constraints) {
@@ -90,7 +90,7 @@ public class KnowledgeStochasticRanking implements DominanceComparator,
             if (numApplied >= numberConstraints) {
                 break;
             }
-            if (pprng.nextDouble() < probabilities.get(str)) {
+            if (PRNG.nextDouble() < probabilities.get(str)) {
                 constraint1 += (double) solution1.getAttribute(str);
                 constraint2 += (double) solution2.getAttribute(str);
             }
